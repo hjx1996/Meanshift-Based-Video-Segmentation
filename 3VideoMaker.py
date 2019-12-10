@@ -1,23 +1,26 @@
-# !/usr/bin/python3
-# -*- coding: utf-8 -*-
+# !usr/bin/python3
+# encoding: utf-8
+# author: Huang Jingxiong
 
-import numpy as np
 from glob import glob
 import cv2 as cv
+import numpy as np
+import os
 
-origin_path = r'.\WavingTrees\b00*.bmp'
-after_path = r'.\output\*.bmp'
+origin_path = r'.\Car4\img\0*.jpg'
+result_path = r'.\Output\0*.jpg'
 
 left_side = glob(origin_path)
-right_side = glob(after_path)
-file_index = 0
-video_writer = cv.VideoWriter('result.avi', cv.VideoWriter_fourcc(*'MJPG'), 25, (320, 120))
+right_side = glob(result_path)
 
-if __name__ == '__main__':
-    for i in range(len(left_side)):
-        print('Left side: ' + left_side[i])
-        print('Right side: ' + right_side[i])
-        result = np.concatenate((cv.imread(left_side[i]), cv.imread(right_side[i])), axis=1)
-        # cv.imwrite(r'./video/' + '%05d' % file_index + '.bmp', result)
-        video_writer.write(result)
-        file_index += 1
+
+if __name__ == "__main__":
+	fourcc = cv.VideoWriter_fourcc(*'MJPG')
+	video_writer_final = cv.VideoWriter('Final.avi', fourcc, 25, (720, 240))
+	for i in range(len(left_side)):
+		result = np.concatenate((cv.imread(left_side[i]), cv.imread(right_side[i])), axis=1)
+		video_writer_final.write(result)
+
+	if os.path.exists("Video.avi"):
+		os.remove("Video.avi")
+		print("执行完毕")
